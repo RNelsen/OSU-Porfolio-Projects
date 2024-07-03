@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Purchases - FortySevenPharma</title>
+<script language="JavaScript">
+
+    // Code to dynamically display add was adapted from 
+    // Flask start app
+    // Original repository: https://github.com/osu-cs340-ecampus/flask-starter-app
+    // Forked from: https://github.com/gkochera/CS340-demo-flask-app
+    // Date: 11/29/2023
+    function showForm(dowhat) {
+        document.getElementById('browse').style.display = 'none';
+        document.getElementById('insert').style.display = 'none';
+
+        if(dowhat === 'insert') {
+            document.getElementById('insert').style.display = 'block';
+        } else if(dowhat === 'browse') {
+            document.getElementById('browse').style.display = 'block';
+        }
+    }
+    function newPurchase() {
+        showForm('insert');
+    }
+
+    // Function to show a confirmation window prior to deleting
+    // Code for confirming delete was adapted from Stack Overflow Post: "How to show a confirm message before delete?" 
+    // Source URL: https://stackoverflow.com/questions/9139075/how-to-show-a-confirm-message-before-delete
+    // Accessed: 11/21/2023
+    function confirmDelete(url) {
+            if (confirm("Are you sure you want to delete?")) {
+                window.location.href = url;
+            }
+        }
+</script>
+
+{% endblock %}
+
+{% block body %}
+<body>
+    <div id="browse">
+    <h2>Purchase Information</h2>
+
+    <table class="greyGridTable">
+        <thead>
+        <tr>
+            <th>Edit</th>
+            <th>Delete</th>
+            <th>Purchase ID</th>
+            <th>Medication ID</th>
+            <th>Brand Name</th>
+            <th>Generic Name</th>
+            <th>Customer (ID - Name)</th>
+            <th>Date of Purchase</th>
+        </tr>
+        </thead>
+        <tbody>
+
+            <!-- loop to display purchase data -->
+            {% for purchase in purchases_data %}
+            <tr>
+                <td><a href="edit_purchase/{{ purchase['Purchase ID'] }}" class="btn btn-default">Edit</a></td>
+                <td><a href="javascript:confirmDelete('delete_purchase/{{ purchase['Purchase ID'] }}')" class="btn btn-default">Delete</a></td>
+                <td>{{ purchase['Purchase ID'] }}</td>
+                <td>{{ purchase['Medication ID'] }}</td>
+                <td>{{ purchase['Brand Name'] }}</td>
+                <td>{{ purchase['Generic Name'] }}</td>
+                <td>{{ purchase['Customer'] }}</td>
+                <td>{{ purchase['Date of Purchase'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p><a href="#" class="btn-add" onclick="newPurchase()">Add New Purchase</a></p>
+    </div>
+
+    <!-- inserting purchase data into the database -->
+    <div id="insert" style="display:none;">
+        <h2>Add Purchase</h2>
+        <form action="/purchases" method="post">
+            <fieldset>
+                <p>
+                    <label for="medicationId">Medication (ID - Brand Name):</label>
+                    <select id="medicationId" name="medicationId" required>
+                        <option value="">Select a Medication</option>
+                        
+                        <!-- pull in medication data for dropdown displaying and editing -->
+                        {% for medication in medications_data %}
+                            <option value="{{ medication.medicationID }}">
+                                {{ medication.medicationID }} - {{ medication.brandName }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </p>
+                <p>
+                    <label for="customerId">Customer (ID - Name):</label>
+                    <select id="customerId" name="customerId" required>
+                        <option value="">Select a Customer</option>
+
+                        <!-- pull in customer data for dropdown displaying and editing -->
+                        {% for customer in customers_data %}
+                            <option value="{{ customer.customerID }}">
+                                {{ customer.customerDisplay }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </p>
+                <p>
+                    <label for="dateOfPurchase">Date of Purchase:</label>
+                    <input type="date" id="dateOfPurchase" name="dateOfPurchase" required>
+                </p>
+            </fieldset>
+
+            <!-- submit button -->
+            <button type="submit" class="btn btn-primary">Add Purchase</button>
+            <button type="button" onclick="showForm('browse')" class="btn-add">Cancel</button>
+        </form>
+    </div>
+    
+{% endblock %}

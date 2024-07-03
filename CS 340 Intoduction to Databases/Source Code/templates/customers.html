@@ -1,0 +1,95 @@
+<!-- This page displays informationa about customers from the database -->
+
+{% extends 'base.html' %}
+
+
+{% block head %}
+<title>Customers - FortySevenPharma</title>
+
+
+<script language="JavaScript">
+
+    // Code to dynamically display add was adapt from 
+    // Flask start app
+    // Original repository: https://github.com/osu-cs340-ecampus/flask-starter-app
+    // Forked from: https://github.com/gkochera/CS340-demo-flask-app
+    // Date: 11/29/2023
+    function showform(dowhat) {
+        document.getElementById('browse').style.display = 'none';
+        document.getElementById('insert').style.display = 'none';
+
+        if(dowhat == 'insert') {
+            document.getElementById('insert').style.display = 'block';
+        } else if(dowhat == 'browse') {
+            document.getElementById('browse').style.display = 'block';
+        }
+    }
+    function newCustomer() {
+        showform('insert');
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+<body onload="showform('browse')">
+    <div id="browse">
+        <h2>Customers</h2>
+        <table class="greyGridTable">
+            <thead>
+            <tr>
+                <th>Edit</th>
+                <th>Customer ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+            </tr>
+            </thead>
+            <tbody>
+                
+                <!-- Loop to show customer data from database -->
+                {% for customer in customers_data %}
+                <tr>
+                    <td><a href="/edit_customer/{{ customer['customerID'] }}" class="btn btn-default">Edit</a></td>
+                    <td>{{ customer['customerID'] }}</td>
+                    <td>{{ customer['firstName'] }}</td>
+                    <td>{{ customer['lastName'] }}</td>
+                    <td>{{ customer['email'] if customer['email'] else 'None' }}</td>
+                    <td>{{ customer['phoneNumber'] if customer['phoneNumber'] else 'None' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Add a new customer link-->
+        <p><a href="#" class="btn-add" onClick="newCustomer()">Add New Customer</a></p>
+    </div>
+
+    <!-- Form to add new customer to database -->
+    <div id="insert" style="display: none;">
+        <h2>Add Customer</h2>
+        <form action="/add_customer" method="post">
+            <fieldset>
+                <p>
+                    <label>First Name</label>
+                    <input type="text" id="firstName" name="firstName" required/>
+                </p>
+                <p>
+                    <label>Last Name</label>
+                    <input type="text" id="lastName" name="lastName" required/>
+                </p>
+                <p>
+                    <label>Email Address</label>
+                    <input type="email" id="email" name="email"/>
+                </p>
+                <p>
+                    <label>Phone Number</label>
+                    <input type="tel" id="phoneNumber" name="phoneNumber"/>
+                </p>
+                <input type="submit" value="Add Customer" class="btn-add">
+                <input type="button" value="Cancel" onclick="showform('browse')" class="btn-add">
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+

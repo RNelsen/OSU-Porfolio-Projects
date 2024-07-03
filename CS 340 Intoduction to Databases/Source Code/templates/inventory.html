@@ -1,0 +1,143 @@
+<!-- Page to display information about current inventory in the database -->
+
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Inventory - FortySevenPharma</title>
+<script language="JavaScript">
+    // Function to validate the entered data is correct. Current, minimum, and maximum inventory should
+    // be positive and a number.  Also validates the cost to buy field.
+    // Code for validating was adapted from Stack Overflow Post: 
+    // "How do you check that a number is NaN in JavaScript?" 
+    // Source URL: https://stackoverflow.com/questions/2652319/how-do-you-check-that-a-number-is-nan-in-javascript
+    // Accessed: 11/21/2023
+    function validateInventoryForm() {
+        var currentInventory = document.getElementById("currentInventory");
+        var minInventory = document.getElementById("minInventory");
+        var maxInventory = document.getElementById("maxInventory");
+
+        // Validate Current Inventory
+        if (currentInventory && (currentInventory.value < 0 || isNaN(currentInventory.value) || !Number.isInteger(Number(currentInventory.value)))) {
+            alert("Current Inventory must be a positive integer.");
+            return false;
+        }
+
+        // Validate Minimum Inventory
+        if (minInventory && (minInventory.value < 0 || isNaN(minInventory.value) || !Number.isInteger(Number(minInventory.value)))) {
+            alert("Minimum Inventory must be a positive integer.");
+            return false;
+        }
+
+        // Validate Maximum Inventory
+        if (maxInventory && (maxInventory.value < 0 || isNaN(maxInventory.value) || !Number.isInteger(Number(maxInventory.value)))) {
+            alert("Maximum Inventory must be a positive integer.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+<h2>Inventory Details</h2>
+
+{% if inventory_data %}
+<table class="greyGridTable">
+    <thead>
+        <tr>
+            <!-- Loop to dynamically pull column headers to be displayed
+            Code to select dynamic dropdowns from database was adapted from
+            Flask starter app
+            Original repository: https://github.com/osu-cs340-ecampus/flask-starter-app
+            Forked from: https://github.com/gkochera/CS340-demo-flask-app
+            Date: 10/15/2023 -->
+            {% for key in inventory_data[0].keys() %}
+            <th scope="col">
+                {% if key == 'medicationID' %}
+                    Medication ID
+                {% else %}
+                    {{ key }}
+                {% endif %}
+            </th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+
+        <!-- Loop to display data about the inventory items -->
+        {% for item in inventory_data %}
+        <tr>
+            {% for key in item.keys() %}
+                <td>{{ item[key] or 'None' }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p>No inventory data available.</p>
+{% endif %}
+
+
+<!-- Form for adding inventory to the database -->
+<div>
+    <h2>Add Inventory Item</h2>
+    <form id="insertInventory" action="/inventory" method="post" onsubmit="return validateInventoryForm()">
+        <fieldset>
+            <p>
+                <label for="medication">Medication (ID - Brand Name - Strength - Formulation):</label>
+                <select id="medication" name="medicationID" required>
+                    {% for medication in medications %}
+                    <option value="{{ medication['medicationID'] }}">
+                        {{ medication['medicationID'] }} - {{ medication['brandName'] }} - {{ medication['strength'] }} - {{ medication['formulation'] }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <label for="currentInventory">Current Inventory (optional):</label>
+                <input type="number" id="currentInventory" name="currentInventory" />
+            </p>
+            <p>
+                <label for="minInventory">Minimum Inventory (optional):</label>
+                <input type="number" id="minInventory" name="minInventory" />
+            </p>
+            <p>
+                <label for="maxInventory">Maximum Inventory (optional):</label>
+                <input type="number" id="maxInventory" name="maxInventory" />
+            </p>
+            <p>
+                <label for="locationShelf">Location on Shelf (optional):</label>
+                <input type="text" id="locationShelf" name="locationShelf" />
+            </p>
+            <p>
+                <label for="locationAutomation">Location in Automation (optional):</label>
+                <select id="locationAutomation" name="locationAutomation">
+                    <option value="">None</option>
+
+                    <!-- pull in automation information to display -->
+                    {% for automation in automations %}
+                    <option value="{{ automation['automationID'] }}">{{ automation['automationName'] }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <label for="locationRefrigerator">Location in Refrigerator (optional):</label>
+                <select id="locationRefrigerator" name="locationInRefrigerator">
+                    <option value="">None</option>
+
+                    <!-- pull in refrigerator information -->
+                    {% for refrigerator in refrigerators %}
+                    <option value="{{ refrigerator['refrigeratorID'] }}">{{ refrigerator['refrigeratorName'] }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+
+            <!-- submit button -->
+            <input type="submit" value="Add Inventory" name="Add_Inventory" class="btn-add" style="margin:.5rem;">
+        </fieldset>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+<!-- This page is a holding page to edit a customer information. -->
+
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Edit Customer - FortySevenPharma</title>
+
+{% endblock %}
+
+{% block body %}
+
+
+    <div id="update">
+
+        <h2>Update Customer</h2>
+
+        <form id="updateCustomer" action="/update_customer/{{ customer.customerID}}" method="post">
+            <fieldset>
+                {% if customer %}
+
+                <!-- Customer ID not editable -->
+                <p>Customer ID: {{ customer.customerID }}</p>
+                
+                <label>First Name</label>
+                <input type="text" value="{{ customer.firstName }}" id="firstName" name="firstName" required/>
+                
+                <label>Last Name</label>
+                <input type="text" value="{{ customer.lastName }}" id="lastName" name="lastName" required/>
+                
+                <label>Email</label>
+                <input type="text" value="{{ customer.email }}"  id="email" name="email"/>
+                
+                <label>Phone Number</label>
+                <input type="tel" value="{{ customer.phoneNumber }}"  id="phoneNumber" name="phoneNumber"/>
+                </p>
+                
+                <!-- Submit button -->
+                <button type="submit" value="Update Customer" name="Update_Customer" class="btn-add" style="margin:.5rem;">Update Customer</button>
+                <a href='/customers'><input class="btn-add" type="button" value="Cancel"></a> 
+                {% endif %}
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

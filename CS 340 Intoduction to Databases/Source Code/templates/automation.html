@@ -1,0 +1,53 @@
+<!-- This page displays the automation table from the database -->
+
+
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Automation - FortySevenPharma</title>
+{% endblock %}
+
+{% block body %}
+<h2>Automation Details</h2>
+
+<table class="greyGridTable">
+    <thead>
+        {% if data %}
+        <thead>
+            <tr>
+                {% for key in data[0].keys() %}
+                <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        
+        <tbody>
+
+            <!-- Loop to display current data of automations from database -->
+            {% for item in data %}
+            <tr>
+                {% for key in item.keys() %}
+                    <td> {{item[key]}} </td> 
+                {% endfor %} 
+            </tr>
+            {% endfor %} 
+        </tbody>
+        {% endif %} 
+</table>
+
+<!-- Button to add automation to database -->
+<div>
+    <h2>Add Automation</h2>
+    <form id="insertAutomation" action="/automation" method="post">
+        <fieldset>
+            <p>
+                <label>Automation Name:</label>
+                <input type="text" id="addAutomation" name="addAutomation"/>
+            </p>
+
+            <input type="submit" value="Add Automation" name="Add_Automation" class="btn-add" style="margin:.5rem;">
+        </fieldset>
+    </form>
+</div>
+
+{% endblock %}

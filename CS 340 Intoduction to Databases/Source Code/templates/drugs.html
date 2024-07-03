@@ -1,0 +1,222 @@
+<!-- This page displays the Medication page.  From this page one can view, update,
+delete and add drugs to the datbase -->
+
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Medications - FortySevenPharma</title>
+    <script language="JavaScript">
+
+        // Code to dynamically display add was adapt from 
+        // Flask start app
+        // Original repository: https://github.com/osu-cs340-ecampus/flask-starter-app
+        // Forked from: https://github.com/gkochera/CS340-demo-flask-app
+        // Date: 11/29/2023
+        function showform(dowhat) {
+            /*
+             * four DIVS: browse, insert, update, delete
+             * this function sets one visible the others not
+             */
+            if(dowhat == 'insert') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'block';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'none';
+            } else if(dowhat == 'update') {
+                document.getElementById('browse').style.display = 'none';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'block';
+                document.getElementById('delete').style.display = 'none';
+            } else if(dowhat == 'all') {
+                document.getElementById('browse').style.display = 'block';
+                document.getElementById('insert').style.display = 'block';
+                document.getElementById('update').style.display = 'block';
+                document.getElementById('delete').style.display = 'block';
+            } else { //by default display browse
+                document.getElementById('browse').style.display = 'block';
+                document.getElementById('insert').style.display = 'none';
+                document.getElementById('update').style.display = 'none';
+                document.getElementById('delete').style.display = 'none';
+            }
+        }
+    
+        function newMed() {
+            showform('insert');
+        }
+    
+        function updateMedication(item) {
+            showform('update');
+
+            document.getElementById('updateMedicationID').value = item['Medication ID'];
+            document.getElementById('updateBrandName').value = item['Brand Name'];
+            document.getElementById('updateGenericName').value = item['Generic Name'];
+            document.getElementById('updateStrength').value = item['Strength'];
+            document.getElementById('updateFormulation').value = item['Formulation'];
+            document.getElementById('updateUPCNumber').value = item['UPC Number'];
+            document.getElementById('updateNDCNumber').value = item['NDC Number'];
+            document.getElementById('updateCost').value = item['Cost to Buy'];
+            document.getElementById('updateBottleSize').value = item['Bottle Count Size'];
+            document.getElementById('updateWholesaler').value = item['Wholesaler'];
+            document.getElementById('updateLastPurchasedDate').value = item['Last Purchased Date'];
+        }
+
+        function browseMedication() {
+            showform('browse');
+        }
+    
+        function showAll() {
+            showform('all');
+        }
+
+        // Function to show a confirmatino window prior to deleting
+        // Code for confirming delete was adapted from Stack Overflow Post: "How to show a confirm message before delete?" 
+        // Source URL: https://stackoverflow.com/questions/9139075/how-to-show-a-confirm-message-before-delete
+        // Accessed: 11/21/2023
+        function confirmDelete(url) {
+            if (confirm("Are you sure you want to delete?")) {
+                window.location.href = url;
+            }
+        }
+        
+        // Function to validate the entered data is correct.  Bottle size should 
+        // be positive and a number.  Also validates the cost to buy field.
+        // Code for validating bottle count size was adapted from Stack Overflow Post: 
+        // "How do you check that a number is NaN in JavaScript?" 
+        // Source URL: https://stackoverflow.com/questions/2652319/how-do-you-check-that-a-number-is-nan-in-javascript
+        // Accessed: 11/21/2023
+        function validateForm() {
+            var bottleCount = document.getElementById("bottleSize") || document.getElementById("bottleCountSize");
+            var costToBuy = document.getElementById("cost") || document.getElementById("costToBuy");
+
+            if (bottleCount && (bottleCount.value <= 0 || isNaN(bottleCount.value) || !Number.isInteger(Number(bottleCount.value)))) {
+                alert("Please enter a positive integer for the bottle count size.");
+                return false;
+            }
+
+            if (costToBuy && (costToBuy.value < 0 || isNaN(costToBuy.value) || !costToBuy.value.match(/^\d+(\.\d{0,2})?$/))) {
+                alert("Please enter a positive number for the cost to buy, up to two decimal places.");
+                return false;
+            }
+
+            return true;
+        }  
+
+        // Function to format the cost to buy field to a 2 decimal currency.
+        function formatToTwoDecimalPlaces(event) {
+            var value = parseFloat(event.target.value);
+            if (!isNaN(value) && value >= 0) {
+                event.target.value = value.toFixed(2);
+            }
+        }    
+        </script>
+{% endblock %}
+
+
+{% block body %}
+
+<!-- Main body for viewing the current database of medications -->
+<body onload="browseMedication()">
+    <div id="browse">
+        <h2>Current Medications in Database</h2>
+        <table class="greyGridTable">
+            {% if data %}
+                <thead>
+                    <tr>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        {% for key in data[0].keys() %}
+                        <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <!-- Loop to enter data onto the medications table -->
+                    {% for item in data %}
+                    <tr>
+                        <td><a href="edit_medication/{{ item['Medication ID'] }}" class="btn btn-default">Edit</a></td>
+                        <td><a href="javascript:confirmDelete('delete_med/{{ item['Medication ID'] }}');" class="btn btn-default">Delete</a></td>
+                        {% for key in item.keys() %}
+                        <td>
+                            {% if key == 'Cost to Buy' %}
+
+                                <!-- Code for formatting to 2 decimals was adapted from Stack Overflow Post: 
+                                "Need help understanding the format ".2f" command and why it is not working in my code" 
+                                Source URL: https://stackoverflow.com/questions/58171983/need-help-understanding-the-format-2f-command-and-why-it-is-not-working-in-my 
+                                Accessed: 11/20/2023  -->
+                                {{ "%.2f"|format(item[key]) }}
+                            {% else %}
+                                {{ item[key] }}
+                            {% endif %}
+                        </td> 
+                        {% endfor %}
+                    </tr>
+                    {% endfor %} 
+                </tbody>
+            {% endif %} 
+            </table>
+    
+        <p><a href="#" class="btn-add" onClick="newMed()">Add New Medication</a> </p>
+        <p>&nbsp;</p>
+    </div>
+
+    <div id="insert">
+        <h2>Add Medication</h2>
+        <form id="insertMedication" action="/drugs" method="post" onsubmit="return validateForm()">
+            <fieldset>
+                <p>
+                    <label>Brand Name:</label>
+                    <input type="text" id="brandName" name="brandName" required placeholder="Required"/>
+                    <label>Generic Name:</label>
+                    <input type="text" id="genericName" name="genericName" required placeholder="Required"/>
+                    <label>Strength:</label>
+                    <input type="text" id="strength" name="strength" min="1" required placeholder="Required"/>
+                    <label>Formulation</label>
+
+                    <!-- Display a drop of possible formulations for medications -->
+                    <select id="formulation" name="formulation" required>
+                        <option value="">Select Formulation</option>
+                        <option value="Tablet">Tablet</option>
+                        <option value="Liquid">Liquid</option>
+                        <option value="Capsule">Capsule</option>
+                        <option value="Injection">Injection</option>
+                        <option value="Patch">Patch</option>
+                        <option value="Inhaler">Inhaler</option>
+                        <option value="Topical">Topical</option>
+                    </select>
+                </p>
+                <p>
+                    <label>NDC Number</label>
+                    <input type="integer" id="ndcNumber" name="ndcNumber" min="1" minlength="11" maxlength="11" 
+                           placeholder="Required Enter 11 Digits" 
+                    required/>
+                    <label>UPC Number</label>
+                    <input type="integer" id="upcNumber" name="upcNumber" min="1" minlength="12" maxlength="12" 
+                           placeholder="Required Enter 12 Digits" 
+                    required/>
+                    <label>Wholesaler</label>
+                    <select id="wholesaler" name="wholesaler">
+                        <option value="0">&nbsp;</option>
+                        {% for item in wholesalerData %}
+                                <option value="{{ item.wholesalerID }}">{{ item.wholesalerName }}</option>
+                        {% endfor %} 
+                     </select>
+                </p>
+                <p>
+                    <label>Cost to Buy</label>
+                    <input type="number" id="cost" name="cost" min="0" step="0.01" onblur="formatToTwoDecimalPlaces(event)"/>
+                    <label>Bottle Count Size</label>
+
+                    <!-- How can I make first number of phone number cannot be zero? [closed]
+                    https://stackoverflow.com/questions/58970406/how-can-i-make-first-number-of-phone-number-cannot-be-zero
+                    Accessed: 12/9/2023 -->
+                    <input type="number" id="bottleSize" name="bottleSize" min="1" required placeholder="Required" oninput="this.value = this.value.replace(/^0/g, '');"/>
+                    <label>Last Date of Purchase</label>
+                    <input type="date" id="dateOfPurchase" name="dateOfPurchase" required>
+                </p>
+            </fieldset>
+            <input type="submit" value="Add Medication" name="Add_Med" class="btn-add" style="margin:.5rem;">
+			<input class="btn-add" type="button" value="Cancel" onClick="browseMedication()"> 
+        </form>
+    </div>
+{% endblock %}

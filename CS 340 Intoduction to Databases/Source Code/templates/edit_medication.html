@@ -1,0 +1,131 @@
+<!-- This page is holding page to edit medication information -->
+
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Edit Medication - FortySevenPharma</title>
+<script language="JavaScript">
+
+
+    // Function to validate the entered data is correct.  Bottle size should 
+    // be positive and a number.  Also validates the cost to buy field.
+    // Code for validating bottle count size was adapted from Stack Overflow Post: 
+    // "How do you check that a number is NaN in JavaScript?" 
+    // Source URL: https://stackoverflow.com/questions/2652319/how-do-you-check-that-a-number-is-nan-in-javascript
+    // Accessed: 11/21/2023
+    function validateForm() {
+        var bottleCount = document.getElementById("bottleSize") || document.getElementById("bottleCountSize");
+        var costToBuy = document.getElementById("cost") || document.getElementById("costToBuy");
+
+        if (bottleCount && (bottleCount.value <= 0 || isNaN(bottleCount.value) || !Number.isInteger(Number(bottleCount.value)))) {
+            alert("Please enter a positive integer for the bottle count size.");
+            return false;
+        }
+
+        if (costToBuy && (costToBuy.value < 0 || isNaN(costToBuy.value) || !costToBuy.value.match(/^\d+(\.\d{0,2})?$/))) {
+            alert("Please enter a positive number for the cost to buy, up to two decimal places.");
+            return false;
+        }
+
+        return true;
+    }
+
+    // Function to format the cost to buy field to a 2 decimal currency.
+    function formatToTwoDecimalPlaces(event) {
+        var value = parseFloat(event.target.value);
+        if (!isNaN(value) && value >= 0) {
+            event.target.value = value.toFixed(2);
+        }
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+
+
+    <div id="update">
+
+        <h2>Update Medication</h2>
+
+        <form id="updateMedication" method="post" onsubmit="return validateForm()">
+            <fieldset>
+
+                <!-- Populate the form with medication information -->
+                {% if medication %}
+                <p>
+                    <!-- Medication ID (hidden) -->
+                <input type="hidden" id="updateMedicationID" name="medicationID"/>
+                
+                <label>Brand Name</label>
+                <input type="text" value="{{ medication.brandName }}" id="brandName" name="brandName" required/>
+                
+                <label>Generic Name</label>
+                <input type="text" value="{{ medication.genericName }}" id="genericName" name="genericName" minlength="1"/>
+                
+                <label>Strength</label>
+                <input type="text" value="{{ medication.strength }}"  id="strength" name="strength" min="1" required/>
+                
+                <label>Formulation</label>
+                <select id="formulation" name="formulation" required>
+                    <option value="Tablet" {% if medication.formulation == 'Tablet' %}selected{% endif %}>Tablet</option>
+                    <option value="Liquid" {% if medication.formulation == 'Liquid' %}selected{% endif %}>Liquid</option>
+                    <option value="Capsule" {% if medication.formulation == 'Capsule' %}selected{% endif %}>Capsule</option>
+                    <option value="Injection" {% if medication.formulation == 'Injection' %}selected{% endif %}>Injection</option>
+                    <option value="Patch" {% if medication.formulation == 'Patch' %}selected{% endif %}>Patch</option>
+                    <option value="Inhaler" {% if medication.formulation == 'Inhaler' %}selected{% endif %}>Inhaler</option>
+                    <option value="Topical" {% if medication.formulation == 'Topical' %}selected{% endif %}>Topical</option>
+                </select>
+                </p>
+
+                <label>UPC Number</label>
+                <input type="text" value="{{ medication.upcNumber }}"  id="upcNumber" name="upcNumber" min="1" minlength="11" maxlength="11" required/>
+                
+                <label>NDC Number</label>
+                <input type="text" value="{{ medication.ndcNumber }}"  id="ndcNumber" name="ndcNumber" min="1" minlength="12" maxlength="12" required/>
+                
+                <label>Cost to Buy</label>
+                <input type="text" value="{{ medication.costToBuy }}"  id="costToBuy" name="costToBuy" min="0" step="0.01" onblur="formatToTwoDecimalPlaces(event)"/>
+                
+                
+                <!-- Code to make sure that first digit isn't a zero source from
+                How can I make first number of phone number cannot be zero? [closed]
+                https://stackoverflow.com/questions/58970406/how-can-i-make-first-number-of-phone-number-cannot-be-zero
+                Accessed: 12/9/2023 -->
+
+                <label>Bottle Count Size</label>
+                <input type="number" value="{{ medication.bottleCountSize }}" id="bottleCountSize" name="bottleCountSize" min="1" oninput="this.value = this.value.replace(/^0/g, '');" required/>
+                
+                <p>
+                <!-- Wholesaler Dropdown -->
+                <label>Wholesaler</label>
+                <select id="wholesaler" name="wholesaler">
+                    <option value="0">&nbsp;</option>
+                    {% for item in wholesalerData %}
+
+                        <!-- Code to select current wholesaler in database was adapted from
+                        Flask starter app
+                        Original repository: https://github.com/osu-cs340-ecampus/flask-starter-app
+                        Forked from: https://github.com/gkochera/CS340-demo-flask-app
+                        Date: 10/15/2023 -->
+                        {% if item.wholesalerID == medication.wholesalerID %} 
+                            <option value="{{ item.wholesalerID }}" selected>{{ item.wholesalerName }}</option>
+                        {% else %}
+                            <option value="{{ item.wholesalerID }}">{{ item.wholesalerName }}</option>
+                        {% endif %}
+                    {% endfor %} 
+                </select>
+                
+                <label>Last Purchased Date</label>
+                <input type="date" value="{{ medication.lastPurchased }}"  id="lastPurchased" name="lastPurchased" required/>
+                </p>
+                
+                <!-- Submit button -->
+                <button type="submit" value="Update Medication" name="Update_Med" class="btn-add" style="margin:.5rem;">Update Medication</button>
+                <a href='/drugs'><input class="btn-add" type="button" value="Cancel"></a> 
+                </fieldset>
+                {% endif %}
+        </form>
+
+    </div>
+
+{% endblock %}

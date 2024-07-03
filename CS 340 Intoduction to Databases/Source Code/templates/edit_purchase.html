@@ -1,0 +1,72 @@
+<!-- This page is a holding page to edit purchases -->
+
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Edit Purchase - FortySevenPharma</title>
+
+{% endblock %}
+
+{% block body %}
+
+
+    <div id="update">
+
+        <h2>Update Purchase</h2>
+
+        <!-- Populate the form with purchase data to be editted -->
+        <form id="updatePurchase" method="post">    
+            <fieldset>
+                {% if purchase %}
+                <!-- Purchase ID is a Non-Editable Field -->
+                <p>Purchase ID: {{ purchase.purchaseID }}</p>
+
+                <p>
+                    <label for="customer">Customer Name:</label>
+                    <select id="customer" name="customerID" required>
+                        {% for customer in customers %}
+
+                            <!-- Code to select from dynamic dropdowns in database was adapted from
+                            Flask starter app
+                            Original repository: https://github.com/osu-cs340-ecampus/flask-starter-app
+                            Forked from: https://github.com/gkochera/CS340-demo-flask-app
+                            Date: 10/15/2023 -->
+                            {% if customer.customerID == purchase.customerID %}
+                                <option value="{{ customer['customerID'] }}" selected>
+                                    {{ customer['customerID']}} - {{ customer['firstName'] }} {{ customer['lastName'] }}
+                                </option>
+                            {% else%}
+                                <option value="{{ customer['customerID'] }}">
+                                    {{ customer['customerID']}} - {{ customer['firstName'] }} {{ customer['lastName'] }}
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                    </select> 
+                </p>
+                
+                <p>
+                    <label for="medication">Medication (ID - Brand Name - Generic Name):</label>
+                    <select id="medication" name="medicationID" required>
+                        {% for medication in medications %}
+                            {% if medication.medicationID == purchase.medicationID %}
+                                <option value="{{ medication['medicationID'] }}" selected>{{ medication['medicationID'] }} - {{ medication['brandName'] }} - {{ medication['genericName'] }}</option>
+                            {% else %}
+                                <option value="{{ medication['medicationID'] }}">{{ medication['medicationID'] }} - {{ medication['brandName'] }} - {{ medication['genericName'] }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>  
+                </p>
+
+                <p>
+                <label>Last Purchased Date</label>
+                <input type="date" value="{{ purchase.dateOfPurchase }}"  id="lastPurchased" name="lastPurchased" required/>
+                </p>
+
+                <!-- Submit button -->
+                <button type="submit" value="Update Purchase" name="Update_Purchase" class="btn-add" style="margin:.5rem;">Update Purchase</button>
+                <a href='/purchases'><input class="btn-add" type="button" value="Cancel"></a>
+                {% endif %}
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

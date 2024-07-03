@@ -1,0 +1,57 @@
+<!-- This page is to display refrigerator information from database -->
+
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+<title>Refrigerators - FortySevenPharma</title>
+{% endblock %}
+
+{% block body %}
+<h2>Refrigerator Details</h2>
+
+<table class="greyGridTable">
+    <thead>
+        {% if data %}
+        <thead>
+            <tr>
+
+                <!-- loop to display column information -->
+                {% for key in data[0].keys() %}
+                <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        
+        <tbody>
+
+            <!-- Loop to display current refrigerator data from database -->
+            {% for item in data %}
+            <tr>
+                {% for key in item.keys() %}
+                    <td> {{item[key]}} </td> 
+                {% endfor %} 
+            </tr>
+            {% endfor %} 
+        </tbody>
+        {% endif %} 
+</table>
+
+<!-- Adding refrigerator to database -->
+<div>
+    <h2>Add Refrigerator</h2>
+    <form id="insertRefrigerator" action="/refrigerators" method="post">
+        <fieldset>
+            <p>
+                <label>Refrigerator Name:</label>
+                <input type="text" id="addRefrigerator" name="addRefrigerator"/>
+            </p>
+
+            <!-- submit button -->
+            <input type="submit" value="Add Refrigerator" name="Add_Refrigerator" class="btn-add" style="margin:.5rem;">
+        </fieldset>
+    </form>
+</div>
+
+{% endblock %}

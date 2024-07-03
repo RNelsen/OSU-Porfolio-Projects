@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+<title>Index - FortySevenPharma</title>
+{% endblock %}
+
+<!-- This is the main page explaining the database and a little bit about each page  -->
+
+{% block body %}
+<h2>Introduction Page for Drug Management</h2>
+
+<p>
+    FortySevenPharma processes roughly 60,500 prescriptions each year, 
+    utilizing an inventory of over 2,500 distinctive medications and generating 
+    $6 million in sales, which equates to an average of $100 per prescription. 
+    FortySevenPharma is attempting to refinance its banknote, but doesn’t know 
+    the value of its current inventory cost.  Additionally, all purchases and 
+    inventory management are recorded in a hand ledger. The proposed 
+    database-driven website integrated with barcode scanning technology will 
+    satisfy the requirement from the bank lender and also enhance inventory 
+    management by recording Purchases of Medications from both wholesalers 
+    and Customers. By scanning Medications as they're sold or restocked, the 
+    system will provide real-time updates on shelf contents, ensuring accurate 
+    tracking of sales and a precise grasp on current inventory levels.  All 
+    sales that are recorded in the database will be from a legal prescription. 
+    This approach allows FortySevenPharma to ensure medicines are always 
+    available when needed, streamlining operations, and elevating customer
+    service.</p>
+
+<p>
+    From this page please select one of the options above to 
+    perform management on the inventory in FourtySevenPharma.  Descriptions of 
+    each page is listed below.
+</p>
+
+<p><strong>Drug Database</strong> - Add, Update, and Delete Medications from the
+    database. Update impacts the many-to-many relationship between Medications and Customers. 
+    Wholesalers have been implemented as a nullable foreign key in the creation form 
+    and remain nullable during updates. To remove an existing relationship between 
+    Wholesalers and Medications, simply choose the empty dropdown option for Wholesalers 
+    in the edit form.</p>
+<p><strong>Purchases</strong> - Add, Update and Delete purchases from the database. This page is an
+    intersection table that facilities a M:M relationship with Medications and 
+    Customers.</p>
+<p><strong>Inventory</strong> - Add current inventory in the database</p>
+<p><strong>Wholesalers</strong> - Add, and update wholesaler information</p>
+<p><strong>Automations</strong> - Add Automation locations to the database</p>
+<p><strong>Refrigerators</strong> - Add Refrigerator locations to the database</p>
+<p><strong>Customers</strong> - Add and update customer information in the database</p>
+
+{% endblock %}

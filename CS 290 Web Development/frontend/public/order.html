@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Daniel Reid Nelsen</title>
+    <meta name="robots" content="noindex, noarchive, nofollow">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+
+<body>
+    <header>
+        <h1>Daniel Reid Nelsen</h1>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="order.html">Order</a>
+        <a href="staff.html">Staff</a>
+    </nav>
+    <main>
+        <section>
+            <h2>Order Page</h2>
+            <article>
+                <p class="paragraphOffset">
+                    From this page, please select one item to be ordered.  
+                    Required form elements are outlined in green.
+                </p>
+
+                <form action="/finalorder" method="POST" class="orderPage">
+                    <fieldset>
+                        <legend>Please Enter Contact information</legend>
+            
+                        <label for="firstLastName" class="required">First and Last Name:</label>
+                        <input type="text" 
+                            name="firstLastName"
+                            id="firstLastName" 
+                            autofocus
+                            tabindex="1"
+                            size = "40"
+                            maxlength="120"
+                            required
+                            placeholder="Enter your name here"
+                        />
+                        <label for="emailAddress" class="required">Email Address:</label>
+                        <input type="text"
+                            name="emailAddress"
+                            id="emailAddress"
+                            size="40"
+                            maxlength="120"
+                            tabindex="2"
+                            placeholder="email@domain.com"
+                            required
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"/>
+
+
+                        <label for="physicalAddress" class="required">Physical Address</label>
+                            <input type="text" 
+                                name="physicalAddress"
+                                id="physicalAddress" 
+                                tabindex="3"
+                                size = "40"
+                                maxlength="120"
+                                required
+                                placeholder="address, city, state, zip"
+                            />
+            
+                        <label for="delivery" id="delivery">Delivery Instructions</label>
+                        <textarea name="delivery"
+                            id="delivery"
+                            required
+                            placeholder="Include instructions for delivery here.  Up to 250 characters."
+                            minlength="1"
+                            maxlength="200"
+                            tabindex="4"
+                            spellcheck="true"
+                        ></textarea>
+                    </fieldset>
+
+                    <fieldset class="orderPage orderElements">
+                        <legend>Pet Supply Products</legend>
+                        <table>                                
+                            <caption>Order Just One of These Products</caption>
+                            <thead>
+                              <tr>
+                                <th>Company</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Pick One</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>AGYM</td>
+                                <td>Spinning Cat Scratcher Ball</td>
+                                <td class="price">$52.99</td>
+                                <td class="tableRadio">
+                                    <label for="radioBox10">
+                                    <input type="radio" 
+                                    required
+                                    name="radioBox" 
+                                    value="Spinning Cat Scratcher Ball" 
+                                    id="radioBox10"
+                                    tabindex="5" /></label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Jasonwell</td>
+                                <td>Foldable Dog Pool</td>
+                                <td class="price">$27.25</td>
+                                <td class="tableRadio">
+                                    <label for="radioBox3">
+                                    <input type="radio" 
+                                    name="radioBox" 
+                                    value="Foldable Dog Pool" 
+                                    id="radioBox3"
+                                    tabindex="6" /></label></td>
+                              </tr>
+                              <tr>
+                                <td>Expawlorer</td>
+                                <td>Dog Fence Window</td>
+                                <td class="price">$30.50</td>
+                                <td class="tableRadio">
+                                    <label for="radioBox13">
+                                    <input type="radio" 
+                                    name="radioBox" 
+                                    value="Dog Fence Window" 
+                                    id="radioBox13"
+                                    tabindex="7" /></label> 
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Lollimeow</td>
+                                <td>Capsule Pet Travel Backpack</td>
+                                <td class="price">$59.00</td>
+                                <td class="tableRadio">
+                                    <label for="radioBox12">
+                                    <input type="radio" 
+                                    name="radioBox" 
+                                    value="Capsule Pet Travel Backpack" 
+                                    id="radioBox12"
+                                    tabindex="8" /></label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Drool'd</td>
+                                <td>Cat Hamster Wheel</td>
+                                <td class="price">$349.75</td>
+                                <td class="tableRadio">
+                                    <label for="radioBox11">
+                                        <input type="radio" 
+                                        name="radioBox" 
+                                        value="Cat Hamster Wheel" 
+                                        id="radioBox11"
+                                        tabindex="9" /></label>
+                                </td>
+                              </tr>
+                            </tbody>
+                            </table>
+
+                            <label for="quantity" class="required quantity">Enter Quantity to Order</label>
+                            <input type="number" 
+                                name="quantity"
+                                id="quantity" 
+                                tabindex="10"
+                                required
+                                placeholder="Quantity"
+                            />
+                        <label class="submitButton submitLabel">Press button to submit order</label>
+                        <button type="submit" class="submitButton">Submit Order</button>
+                    </fieldset>
+                </form>
+            </article>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy 2023 Daniel Reid Nelsen</p>
+    </footer>
+</body>
+</html>

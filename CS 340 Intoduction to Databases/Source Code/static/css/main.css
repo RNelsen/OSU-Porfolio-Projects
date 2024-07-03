@@ -1,0 +1,131 @@
+@import "normalize.css";
+
+body {
+    margin: 20px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* CSS for tables adapted from divtable.com/table-styler
+Accessed: 10/2/2023 */
+
+
+table.greyGridTable {
+    border: 2px solid #387f75;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+  }
+  table.greyGridTable td, table.greyGridTable th {
+    border: 1px solid #387f75;
+    padding: 3px 4px;
+  }
+  table.greyGridTable tbody td {
+    font-size: 15px;
+  }
+  table.greyGridTable td:nth-child(even) {
+    background: #c9ebe8;
+  }
+  table.greyGridTable thead {
+    background: #387f75;
+    border-bottom: 4px solid #333333;
+  }
+  table.greyGridTable thead th {
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    border-left: 2px solid #333333;
+  }
+  table.greyGridTable thead th:first-child {
+    border-left: none;
+  }
+  
+  table.greyGridTable tfoot {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333333;
+    border-top: 4px solid #387f75;
+  }
+  table.greyGridTable tfoot td {
+    font-size: 14px;
+  }
+
+  nav {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+h2 {
+  margin-top: 60px;
+  color: #2f6c64
+}
+
+nav a {
+    text-decoration: none; 
+    color: #000000;
+    margin: 0 10px;
+}
+
+nav a:hover {
+  color: #387f75; 
+}
+
+button, .btn {
+  background-color: #2a5e57; 
+  color: white; 
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 3px 2px;
+}
+
+button:hover, .btn:hover {
+  background-color: #7bbcb6;
+  color: white;
+}
+
+.btn-add {
+  background-color: #387f75;
+  color: white;
+  padding: 10px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+}
+
+.btn-add:hover {
+  background-color: #7bbcb6;
+  color: white
+}
+
+nav a::after {
+    content: "|";
+    color: #387f75; 
+    margin-left: 8px;
+}
+
+nav a:last-child::after {
+    content: none;
+}
+
+#main-title {
+  font-size: 32px;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif;
+  color: #2a5e57;
+  margin-bottom: 20px;
+  text-align: center;
+}

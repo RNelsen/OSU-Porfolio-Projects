@@ -1,0 +1,3 @@
+# CS 361 Software Engineering
+
+This was my portfolio project for CS 361 at Oregon State University. My project was to build a SSH host and key orgranizer.  At the moment it's a pretty basic program as the focus of the class was to educate the students on software design and microservices rather than building a full-fledge piece of software.  My video explains the how the software works and it's interaction with the microservice my partner wrote for me.

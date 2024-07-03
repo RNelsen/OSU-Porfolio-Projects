@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <header>
+        <h1 id="main-title">FourtySevenPharma Inventory Management</h1>
+    </header>
+
+    <!-- Setting up the base *.html page  -->
+    <nav class="inlineNavClass">
+        <a href="{{ url_for('home' )}}">Home</a>
+        <a href="{{ url_for('drugs.drugs' )}}">Drug Database</a>
+        <a href="{{ url_for('purchases.purchases' )}}">Purchases</a>
+        <a href="{{ url_for('inventories.inventories' )}}">Inventory</a>
+        <a href="{{ url_for('wholesalers.wholesalers' )}}">Wholesalers</a>
+        <a href="{{ url_for('automation.automation' )}}">Automations</a>
+        <a href="{{ url_for('fridge.fridge' )}}">Refrigerators</a>
+        <a href="{{ url_for('customers.customers' )}}">Customers</a>
+    </nav>
+    {% block body %}
+
+    
+    {% endblock %}
+</body>
+</html>

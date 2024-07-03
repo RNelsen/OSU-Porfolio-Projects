@@ -1,0 +1,45 @@
+<!-- Holding page to edit wholesaler information -->
+
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Edit Wholesaler - FortySevenPharma</title>
+
+{% endblock %}
+
+{% block body %}
+    <div id="update">
+        <h2>Update Customer</h2>
+
+        <!-- Populate form with wholesaler data to edit -->
+        <form id="updateWholesaler" action="/edit_wholesaler/{{ wholesaler.wholesalerID }}" method="post">
+            <fieldset>
+                {% if wholesaler %}
+
+                <!-- Wholesaler ID not editable -->
+                <p>Wholesaler ID: {{ wholesaler.wholesalerID }}</p>
+                
+                <label>Wholesaler Name</label>
+                <input type="text" value="{{ wholesaler.wholesalerName }}" id="wholesalerName" name="wholesalerName" required/>
+                
+                <label>Contact Name</label>
+                <input type="text" value="{{ wholesaler.contactName }}" id="contactName" name="contactName"/>
+                
+                <label>Email</label>
+                <input type="email" value="{{ wholesaler.contactEmail }}"  id="contactEmail" name="contactEmail"/>
+                
+                <label>Phone Number</label>
+                <input type="tel" value="{{ wholesaler.contactPhoneNumber }}"  id="contactPhoneNumber" name="contactPhoneNumber"/>
+    
+                <label>Address</label>
+                <input type="text" value="{{ wholesaler.address }}"  id="address" name="address"/>
+                </p>
+
+                <!-- Submit button -->
+                <button type="submit" value="Update Wholesaler" name="Update_Wholesaler" class="btn-add" style="margin:.5rem;">Update Wholesaler</button>
+                <a href='/wholesalers'><input class="btn-add" type="button" value="Cancel"></a> 
+                {% endif %}
+            </fieldset>
+        </form>
+    </div>
+    {% endblock %}
